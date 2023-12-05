@@ -1,7 +1,6 @@
 #include "scope_test.h"
 #include "../scope.h"
 #include "../span.h"
-#include <iostream>
 
 TEST_F(ScopeTest, prev) {
     struct except_t {
@@ -20,7 +19,7 @@ TEST_F(ScopeTest, prev) {
             "ółko", { {"o", 1, 1}, {"k", 1, 1}, {"ł", 2, 1}, { "ó", 2, 1}}
     };
 
-    for (auto const tt : tests) {
+    for (auto const& tt : tests) {
         ppx::utf8::span span{tt.text.c_str(), uint(tt.text.size())};
         span.end();
 
@@ -53,7 +52,7 @@ TEST_F(ScopeTest, next) {
             "ółko", {{ "ó", 2, 1}, {"ł", 2, 1}, {"k", 1, 1}, {"o", 1, 1}}
     };
 
-    for (auto const tt : tests) {
+    for (auto const& tt : tests) {
         ppx::utf8::span span{tt.text.c_str(), uint(tt.text.size())};
         int i = 0;
         for (;; i++) {
@@ -87,7 +86,7 @@ TEST_F(ScopeTest, skip) {
             "ółk", 4, false,
     };
 
-    for (auto const tt : tests) {
+    for (auto const& tt : tests) {
         ppx::utf8::span span{tt.text.c_str(), uint(tt.text.size())};
         ASSERT_EQ(span.skip(tt.n), tt.except);
     }
@@ -185,7 +184,7 @@ TEST_F(ScopeTest, search) {
 
     struct {
         std::string c;
-        uint pos;
+        int pos;
     } negatime_tests[] = {
             { "ź", 100 },
             { "d", 101 },
@@ -196,7 +195,7 @@ TEST_F(ScopeTest, search) {
 
     for (auto const& tt : positive_tests) {
         auto scope = ppx::utf8::span{tt.c}();
-        auto opt = span.search(scope, tt.pos);
+        auto opt = span.search(scope, int(tt.pos));
         ASSERT_TRUE(opt.has_value());
         auto [pos, found_scope] = *opt;
         ASSERT_EQ(tt.pos, pos);
