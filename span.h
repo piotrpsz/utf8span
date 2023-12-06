@@ -4,6 +4,7 @@
 #include "murmur.h"
 #include <string>
 #include <vector>
+#include <optional>
 
 namespace ppx::utf8 {
 

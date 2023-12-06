@@ -7,8 +7,8 @@ TEST_F(ScopeTest, prev) {
     auto dt = executor([&] {
         struct except_t {
             std::string c;
-            uint size;
-            uint len;
+            int size;
+            int len;
         };
 
         struct {
@@ -22,7 +22,7 @@ TEST_F(ScopeTest, prev) {
         };
 
         for (auto const& tt: tests) {
-            ppx::utf8::span span{tt.text.c_str(), uint(tt.text.size())};
+            ppx::utf8::span span{tt.text.c_str(), ppx::utf8::uint(tt.text.size())};
             span.end();
 
             int i = 0;
@@ -44,8 +44,8 @@ TEST_F(ScopeTest, next) {
     auto dt = executor([&] {
         struct except_t {
             std::string c;
-            uint size;
-            uint len;
+            ppx::utf8::uint size;
+            ppx::utf8::uint len;
         };
 
         struct {
@@ -59,7 +59,7 @@ TEST_F(ScopeTest, next) {
         };
 
         for (auto const& tt: tests) {
-            ppx::utf8::span span{tt.text.c_str(), uint(tt.text.size())};
+            ppx::utf8::span span{tt.text.c_str(), ppx::utf8::uint(tt.text.size())};
             int i = 0;
             for (;; i++) {
                 auto scope = span.next();
@@ -97,7 +97,7 @@ TEST_F(ScopeTest, skip) {
         };
 
         for (auto const& tt: tests) {
-            ppx::utf8::span span{tt.text.c_str(), uint(tt.text.size())};
+            ppx::utf8::span span{tt.text.c_str(), ppx::utf8::uint(tt.text.size())};
             ASSERT_EQ(span.skip(tt.n), tt.except);
         }
     });
@@ -111,7 +111,7 @@ TEST_F(ScopeTest, index_operator) {
         ppx::utf8::span span{text_two_};
 
         struct {
-            uint i;
+            ppx::utf8::uint i;
             std::string expected;
         } tests[] = {
                 {0,  "Ł"},
@@ -138,8 +138,8 @@ TEST_F(ScopeTest, subspan2) {
         ppx::utf8::span span{text_two_};
 
         struct {
-            uint start;
-            uint len;
+            ppx::utf8::uint start;
+            ppx::utf8::uint len;
             std::string expected;
         } tests[] = {
                 {0, 0,  ""},
@@ -175,7 +175,7 @@ TEST_F(ScopeTest, subspan1) {
         ppx::utf8::span span{text_one_};
 
         struct {
-            uint start;
+            ppx::utf8::uint start;
             std::string expected;
         } tests[] = {
                 {0, "Łódź"},
@@ -200,7 +200,7 @@ TEST_F(ScopeTest, search) {
 
         struct {
             std::string c;
-            uint pos;
+            ppx::utf8::uint pos;
         } positive_tests[] = {
                 {"ź", 3},
                 {"d", 2},
@@ -248,8 +248,9 @@ TEST_F(ScopeTest, tolower_test) {
         };
 
         for (auto const& tt: tests) {
-            auto scope = ppx::utf8::span{tt.text}();
-            ASSERT_STREQ(scope.to_lower().data(), tt.expected.data());
+            auto rv = ppx::utf8::span{tt.text}().to_lower();
+            //auto rv = scope.to_lower();
+            ASSERT_EQ(std::string(rv.data(), rv.size()), tt.expected);
         }
     });
     std::cout.fill('.');
@@ -267,8 +268,8 @@ TEST_F(ScopeTest, toupper) {
         };
 
         for (auto const& tt: tests) {
-            auto scope = ppx::utf8::span{tt.text}();
-            ASSERT_STREQ(scope.to_upper().data(), tt.expected.data());
+            auto rv = ppx::utf8::span{tt.text}().to_upper();
+            ASSERT_EQ(std::string(rv.data(), rv.size()), tt.expected);
         }
     });
     std::cout.fill('.');

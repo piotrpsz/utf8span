@@ -1,4 +1,5 @@
 #include "span.h"
+#include <cstring>
 
 namespace ppx::utf8 {
     // Rewind cursor to beginning of source.
