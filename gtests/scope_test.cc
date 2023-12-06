@@ -211,7 +211,7 @@ TEST_F(ScopeTest, search) {
         struct {
             std::string c;
             int pos;
-        } negatime_tests[] = {
+        } negative_tests[] = {
                 {"ź", 100},
                 {"d", 101},
                 {"ó", 102},
@@ -227,7 +227,7 @@ TEST_F(ScopeTest, search) {
             ASSERT_EQ(tt.pos, pos);
             ASSERT_EQ(tt.c, found_scope.str());
         }
-        for (auto const& tt: negatime_tests) {
+        for (auto const& tt: negative_tests) {
             auto scope = ppx::utf8::span{tt.c}();
             auto opt = span.search(scope, tt.pos);
             ASSERT_FALSE(opt.has_value());
