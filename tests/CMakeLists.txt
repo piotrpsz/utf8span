@@ -1,18 +1,14 @@
-cmake_minimum_required(VERSION 3.26)
+cmake_minimum_required(VERSION 3.27)
 
-#message("${CMAKE_SYSTEM_NAME}")
+message("OS: ${CMAKE_SYSTEM_NAME}")
 
-if (CMAKE_SYSTEM_NAME STREQUAL "Linux")
-    find_package(GTest REQUIRED)
-elseif (CMAKE_SYSTEM_NAME STREQUAL "Darwin")
+set(UNIX_LIKE "Linux" "Darwin")
+if (CMAKE_SYSTEM_NAME IN_LIST UNIX_LIKE)
     find_package(GTest REQUIRED)
 elseif (CMAKE_SYSTEM_NAME STREQUAL "Windows")
     set(VCPKG  "C:/Users/user/vcpkg/installed/x64-windows")
     find_package(GTest PATHS ${VCPKG})
 endif ()
-
-include_directories(GTest)
-include_directories(${GTest_INCLUDE_DIRS})
 
 enable_testing()
 add_executable(google_test
