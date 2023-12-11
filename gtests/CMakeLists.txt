@@ -1,6 +1,10 @@
 cmake_minimum_required(VERSION 3.26)
 
-if (CMAKE_SYSTEM_NAME STREQUAL "Darwin")
+#message("${CMAKE_SYSTEM_NAME}")
+
+if (CMAKE_SYSTEM_NAME STREQUAL "Linux")
+    find_package(GTest REQUIRED)
+elseif (CMAKE_SYSTEM_NAME STREQUAL "Darwin")
     find_package(GTest REQUIRED)
 elseif (CMAKE_SYSTEM_NAME STREQUAL "Windows")
     set(VCPKG  "C:/Users/user/vcpkg/installed/x64-windows")
